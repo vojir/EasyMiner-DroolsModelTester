@@ -12,21 +12,24 @@ public class ModelTesterMain {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		if ((args.length!=2)||(args.length!=3)){
+		if ((args.length!=2)&&(args.length!=3)){
 			throw new Exception("This application requires 2 or 3 params - XML file name, CSV file name, selection method");
 		}
 		
-		if (args.length==3){
-			//máme zadanou i výbìrovou metodu
-			
-		}
+		
 		
 		String xmlString = readFileToString(args[0]);
 		String csvString = readFileToString(args[1]);
     	
     	//Pøipravení drools stateless session
     	ModelTester modelTester = ModelTester.prepareFromXml(xmlString);
-    	modelTester.testAllRows(csvString);
+    	if (args.length==3){
+			//máme zadanou i výbìrovou metodu
+    		modelTester.testAllRows(csvString,args[2]);
+		}else{
+			modelTester.testAllRows(csvString,"confidence");
+		}
+    	
     	
     	System.out.println("Rows total: "+modelTester.getRowsTotalCount());
     	System.out.println("Rows positive: "+modelTester.getRowsPositiveMatch());
