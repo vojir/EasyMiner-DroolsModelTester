@@ -13,6 +13,8 @@ import org.drools.core.rule.Package;
 
 @SuppressWarnings("restriction")
 public class ModelTesterSessionHelper {
+
+	private static String betterARMethod;
 	
 	/**
 	 * Funkce pro vytvoøení nového DLR øetìzce - inicializace pomocí výchozích importù
@@ -78,13 +80,65 @@ public class ModelTesterSessionHelper {
      * @return
      */
     public static boolean isBetterAR(DrlAR globalAR, DrlAR currentAR){
-		if (currentAR.getConfidenceValue()>globalAR.getConfidenceValue()){
+		switch (getBetterARMethod()) {
+			case "longerAntecedent":
+				return isBetterAR_longerAntecedent(globalAR, currentAR);
+			case "shorterAntecedent":
+				return isBetterAR_shorterAntecedent(globalAR, currentAR);
+			case "support":
+				return isBetterAR_support(globalAR, currentAR);
+			case "csCombination":
+				return isBetterAR_confidenceSupportCombination(globalAR, currentAR);
+			default:
+				return isBetterAR_confidence(globalAR, currentAR);
+		}
+    }
+    
+    //-----------------------------------------------------------------------------------
+    public static boolean isBetterAR_confidence(DrlAR globalAR,DrlAR currentAR){
+    	if (currentAR.getConfidenceValue()>globalAR.getConfidenceValue()){
 			return true;
 		}else if(currentAR.getConfidenceValue()==globalAR.getConfidenceValue()){
 			return (currentAR.getSupportValue()>globalAR.getSupportValue());
 		}
 		return false;
-    	
     }
+    public static boolean isBetterAR_longerAntecedent(DrlAR globalAR,DrlAR currentAR){
+    	if (currentAR.getAntecedentLength()>globalAR.getAntecedentLength()){
+			return true;
+		}else if(currentAR.getAntecedentLength()==globalAR.getAntecedentLength()){
+			return isBetterAR_confidence(globalAR, currentAR);
+		}
+		return false;
+    }
+    public static boolean isBetterAR_shorterAntecedent(DrlAR globalAR,DrlAR currentAR){
+    	if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){
+			return true;
+		}else if(currentAR.getAntecedentLength()==globalAR.getAntecedentLength()){
+			return isBetterAR_confidence(globalAR, currentAR);
+		}
+		return false;
+    }
+    public static boolean isBetterAR_support(DrlAR globalAR,DrlAR currentAR){
+    	if (currentAR.getSupportValue()>globalAR.getSupportValue()){
+			return true;
+		}else if(currentAR.getSupportValue()==globalAR.getSupportValue()){
+			return isBetterAR_confidence(globalAR, currentAR);
+		}
+		return false;
+    }
+    public static boolean isBetterAR_confidenceSupportCombination(DrlAR globalAR,DrlAR currentAR){
+    	double ar1=globalAR.getConfidenceValue()*Math.log(globalAR.getSupportValue());
+    	double ar2=currentAR.getConfidenceValue()*Math.log(currentAR.getSupportValue());
+    	return (ar2>ar1);
+    }
+    //-----------------------------------------------------------------------------------
+	public static String getBetterARMethod() {
+		return betterARMethod;
+	}
+
+	public static void setBetterARMethod(String betterARMethod) {
+		ModelTesterSessionHelper.betterARMethod = betterARMethod;
+	}
     
 }

@@ -37,6 +37,10 @@ public class ModelTester {
 		this.droolsSession=droolsSession;
 	}
 	
+	public void testAllRows(String csvContent,String betterRuleSelectionMethod){
+		ModelTesterSessionHelper.setBetterARMethod(betterRuleSelectionMethod);
+		testAllRows(csvContent);
+	}
 	
 	/**
 	 * Funkce pro projití jednotlivých øádkù a otestování, jestli odpovídají asociaèním pravidlùm v drools stateless session

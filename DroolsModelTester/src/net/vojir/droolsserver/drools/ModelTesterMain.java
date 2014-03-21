@@ -12,12 +12,15 @@ public class ModelTesterMain {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		if (args.length!=2){
-			throw new Exception("This application requires 2 params - XML file name, CSV file name");
+		if ((args.length!=2)||(args.length!=3)){
+			throw new Exception("This application requires 2 or 3 params - XML file name, CSV file name, selection method");
 		}
 		
-
-
+		if (args.length==3){
+			//máme zadanou i výbìrovou metodu
+			
+		}
+		
 		String xmlString = readFileToString(args[0]);
 		String csvString = readFileToString(args[1]);
     	
