@@ -80,6 +80,9 @@ public class ModelTesterSessionHelper {
      * @return
      */
     public static boolean isBetterAR(DrlAR globalAR, DrlAR currentAR){
+    	if (globalAR.getId().equals("")){
+    		return true;
+    	}
 		switch (getBetterARMethod()) {
 			case "longerAntecedent":
 				return isBetterAR_longerAntecedent(globalAR, currentAR);
@@ -113,6 +116,7 @@ public class ModelTesterSessionHelper {
     }
     public static boolean isBetterAR_shorterAntecedent(DrlAR globalAR,DrlAR currentAR){
     	if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){
+    		System.out.println("shorter");
 			return true;
 		}else if(currentAR.getAntecedentLength()==globalAR.getAntecedentLength()){
 			return isBetterAR_confidence(globalAR, currentAR);
@@ -138,7 +142,24 @@ public class ModelTesterSessionHelper {
 	}
 
 	public static void setBetterARMethod(String betterARMethod) {
-		ModelTesterSessionHelper.betterARMethod = betterARMethod;
+		if (methodExists("isBetterAR_"+betterARMethod)){
+			ModelTesterSessionHelper.betterARMethod = betterARMethod;
+		}else{
+			ModelTesterSessionHelper.betterARMethod="confidence";
+		}
 	}
     
+	/**
+	 * Statická funkce pro ovìøení, zda je definovaná metoda se zvoleným názvem
+	 * @param methodName
+	 * @return
+	 */
+	public static boolean methodExists(String methodName){
+		try {
+			ModelTesterSessionHelper.class.getMethod(methodName);
+		}catch (Exception e){
+			return false;
+		}
+		return true;
+	}
 }

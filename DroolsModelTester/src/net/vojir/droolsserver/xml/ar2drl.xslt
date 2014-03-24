@@ -9,9 +9,9 @@
     
     <xsl:template match="ar:AssociationRule">
         rule "rule_<xsl:value-of select="@id"/>"
-            no-loop true
+        	no-loop true
             when
-                $ar:DrlAR(id=="") and
+                $ar:DrlAR(id!="rule_<xsl:value-of select="@id"/>") and
                 (<xsl:apply-templates select="./ar:Antecedent" mode="drlCondition" />)
             then
             <!-- TODO: doplnění délky antecedentu -->

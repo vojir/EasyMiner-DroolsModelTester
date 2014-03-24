@@ -29,7 +29,7 @@ public class DrlAR {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public int getAntecedentLength() {
 		return antecedentLength;
 	}

@@ -30,7 +30,7 @@ public class ModelTesterMain {
 			modelTester.testAllRows(csvString,"confidence");
 		}
     	
-    	
+    	System.out.println("Conflict resolution method: "+ModelTesterSessionHelper.getBetterARMethod());
     	System.out.println("Rows total: "+modelTester.getRowsTotalCount());
     	System.out.println("Rows positive: "+modelTester.getRowsPositiveMatch());
     	System.out.println("Rows negative: "+modelTester.getRowsNegativeMatch());
