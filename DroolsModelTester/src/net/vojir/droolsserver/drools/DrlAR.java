@@ -3,6 +3,7 @@ package net.vojir.droolsserver.drools;
 
 public class DrlAR {
 	private String id = "";
+	private String bestId = "";
 	private int antecedentLength = -1;
 	private double confidenceValue = -1;
 	private double supportValue = -1;
@@ -28,6 +29,14 @@ public class DrlAR {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getBestId() {
+		return bestId;
+	}
+
+	public void setBestId(String bestId) {
+		this.bestId = bestId;
 	}
 	
 	public int getAntecedentLength() {
@@ -68,6 +77,7 @@ public class DrlAR {
 		this.setConfidenceValue(ar.getConfidenceValue());
 		this.setSupportValue(ar.getSupportValue());
 		this.setCheckedOk(false);
+		this.setBestId(ar.getId());
 	}
 	
 

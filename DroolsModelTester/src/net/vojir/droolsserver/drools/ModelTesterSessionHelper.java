@@ -24,6 +24,7 @@ public class ModelTesterSessionHelper {
 		drlString.append("import net.vojir.droolsserver.drools.DrlObj;");
 		drlString.append("import net.vojir.droolsserver.drools.DrlAR;");
 		drlString.append("import function net.vojir.droolsserver.drools.ModelTesterSessionHelper.isBetterAR;");
+		drlString.append("rule zeroRule salience -1000 when $ar:DrlAR(id!=\"\") then $ar.setId(\"\");update($ar)end");
 		drlString.append(drl);
 		return drlString.toString();
 	}
@@ -80,7 +81,7 @@ public class ModelTesterSessionHelper {
      * @return
      */
     public static boolean isBetterAR(DrlAR globalAR, DrlAR currentAR){
-    	if (globalAR.getId().equals("")){
+    	if (globalAR.getBestId().equals("")){
     		return true;
     	}
 		switch (getBetterARMethod()) {
@@ -116,7 +117,6 @@ public class ModelTesterSessionHelper {
     }
     public static boolean isBetterAR_shorterAntecedent(DrlAR globalAR,DrlAR currentAR){
     	if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){
-    		System.out.println("shorter");
 			return true;
 		}else if(currentAR.getAntecedentLength()==globalAR.getAntecedentLength()){
 			return isBetterAR_confidence(globalAR, currentAR);
@@ -142,24 +142,17 @@ public class ModelTesterSessionHelper {
 	}
 
 	public static void setBetterARMethod(String betterARMethod) {
-		if (methodExists("isBetterAR_"+betterARMethod)){
+		if (betterARMethod.equals("confidence")||
+				betterARMethod.equals("longerAntecedent")||
+				betterARMethod.equals("shorterAntecedent")||
+				betterARMethod.equals("support")){
 			ModelTesterSessionHelper.betterARMethod = betterARMethod;
 		}else{
+			System.out.println("NEEXISTUJE metoda "+betterARMethod);
+			System.exit(0);
 			ModelTesterSessionHelper.betterARMethod="confidence";
 		}
 	}
     
-	/**
-	 * Statická funkce pro ovìøení, zda je definovaná metoda se zvoleným názvem
-	 * @param methodName
-	 * @return
-	 */
-	public static boolean methodExists(String methodName){
-		try {
-			ModelTesterSessionHelper.class.getMethod(methodName);
-		}catch (Exception e){
-			return false;
-		}
-		return true;
-	}
+
 }

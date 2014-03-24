@@ -80,7 +80,7 @@ public class ModelTester {
 			
 			if (drlAR.isCheckedOk()){
 				setRowsPositiveMatch(getRowsPositiveMatch() + 1);
-			}else if(!drlAR.getId().equals("")){
+			}else if(!drlAR.getBestId().equals("")){
 				setRowsNegativeMatch(getRowsNegativeMatch() + 1);
 			}
 			
