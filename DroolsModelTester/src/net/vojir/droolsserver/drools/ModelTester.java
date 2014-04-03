@@ -184,11 +184,11 @@ public class ModelTester {
     	writer.println(drlString);
     	writer.close();
     	
-    	System.out.println("DRL string prepared");
+    	//System.out.println("DRL string prepared");
     	
     	StatelessSession statelessSession = ModelTesterSessionHelper.prepareStatelessSession(drlString);
 
-    	System.out.println("StatelessSession created");
+    	//System.out.println("StatelessSession created");
     	
     	return new ModelTester(statelessSession);
     }

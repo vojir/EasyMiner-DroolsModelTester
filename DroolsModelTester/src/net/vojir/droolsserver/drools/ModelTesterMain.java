@@ -10,10 +10,27 @@ import net.vojir.droolsserver.xml.XmlParser;
 public class ModelTesterMain {
 
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
+		String method="confidence";
+		String output="text";
 		
-		if ((args.length!=2)&&(args.length!=3)){
-			throw new Exception("This application requires 2 or 3 params - XML file name, CSV file name, selection method");
+		if ((args.length==1)&&((args[0].equals("-?")||(args[0].equals("/?"))))){
+			System.out.println("Possible arguments:");
+			System.out.println("XML filename");
+			System.out.println("CSV filename");
+			System.out.println("-method:{confidence|longerAntecedent|shorterAntecedent|support|confidenceSupport} => for example: -method:confidence");
+			System.out.println("-format:{text|xml}");
+		}
+		
+		if ((args.length<2)){
+			throw new Exception("This application requires min. 2 params - XML file name, CSV file name, selection method");
+		}
+		
+		for (String arg : args) {
+			if (arg.startsWith("-method:")){
+				method=arg.substring(8);
+			}else if(arg.startsWith("-output:")){
+				output=arg.substring(8);
+			}
 		}
 		
 		
@@ -23,22 +40,32 @@ public class ModelTesterMain {
     	
     	//Pøipravení drools stateless session
     	ModelTester modelTester = ModelTester.prepareFromXml(xmlString);
-    	if (args.length==3){
-			//máme zadanou i výbìrovou metodu
-    		modelTester.testAllRows(csvString,args[2]);
-		}else{
-			modelTester.testAllRows(csvString,"confidence");
-		}
+    	modelTester.testAllRows(csvString,method);
     	
-    	System.out.println("Conflict resolution method: "+ModelTesterSessionHelper.getBetterARMethod());
-    	System.out.println("Rows total: "+modelTester.getRowsTotalCount());
-    	System.out.println("Rows positive: "+modelTester.getRowsPositiveMatch());
-    	System.out.println("Rows negative: "+modelTester.getRowsNegativeMatch());
-    	System.out.println("Rows errors: "+modelTester.getRowsError());
-    	
-    	//TODO vypsání výsledkù
-    	
+    	System.out.println(ModelTesterMain.prepareOutput(modelTester, output));
 	}
+	
+	private static String prepareOutput(ModelTester modelTester,String outputType){
+		StringBuffer output=new StringBuffer();
+		if (outputType.equals("xml")){
+			output.append("<results>");
+			output.append("<method>"+ModelTesterSessionHelper.getBetterARMethod()+"</method>");
+			output.append("<rowsTotal>"+modelTester.getRowsTotalCount()+"</rowsTotal>");
+			output.append("<rowsPositive>"+modelTester.getRowsPositiveMatch()+"</rowsPositive>");
+			output.append("<rowsNegative>"+modelTester.getRowsNegativeMatch()+"</rowsNegative>");
+			output.append("<rowsErrors>"+modelTester.getRowsError()+"</rowsErrors>");
+			output.append("</results>");
+		}else{
+			output.append("Conflict resolution method: "+ModelTesterSessionHelper.getBetterARMethod()+"\n");
+			output.append("Rows total: "+modelTester.getRowsTotalCount()+"\n");
+			output.append("Rows positive: "+modelTester.getRowsPositiveMatch()+"\n");
+			output.append("Rows negative: "+modelTester.getRowsNegativeMatch()+"\n");
+			output.append("Rows errors: "+modelTester.getRowsError());
+	    	
+		}
+		return output.toString();
+	}
+	
 	
 	@SuppressWarnings("resource")
 	private static String readFileToString(String fileName) throws IOException{

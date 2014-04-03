@@ -4,7 +4,7 @@ package net.vojir.droolsserver.xml;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.sql.Timestamp;
+//import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.xml.transform.Result;
@@ -31,8 +31,8 @@ public class AssociationRulesXmlParser {
 	 */
 	public static ArrayList<String> splitXMLIntoFragments(String xmlString){
 		ArrayList<String> fragments = new ArrayList<String>();
-		java.util.Date date= new java.util.Date();
-		 System.out.println(new Timestamp(date.getTime()));
+		//java.util.Date date= new java.util.Date();
+		 //System.out.println(new Timestamp(date.getTime()));
 		int endPosition=0;
 		int firstPartEnd=xmlString.indexOf(">",xmlString.indexOf("<AssociationRules"))+1;
 		String firstPart=xmlString.substring(0,firstPartEnd);
@@ -110,7 +110,7 @@ public class AssociationRulesXmlParser {
 		int maxParts = 60;
 		
 		ArrayList<String> parts = splitXMLIntoFragments(xmlString);
-		System.out.println("parts "+parts.size());
+		//System.out.println("parts "+parts.size());
     	Transformer transformer = prepareTransformer(xslTemlateResourceName);
     	
     	for (String polozka : parts){
