@@ -7,6 +7,7 @@ public class DrlAR {
 	private int antecedentLength = -1;
 	private double confidenceValue = -1;
 	private double supportValue = -1;
+	private double acValue = -1;
 	private boolean checkedOk=false;
 	
 	
@@ -16,11 +17,12 @@ public class DrlAR {
 		setId(id);
 	}
 	
-	public DrlAR(String id,int antecedentLength, double confidenceValue, double supportValue){
+	public DrlAR(String id,int antecedentLength, double confidenceValue, double supportValue, double acValue){
 		setId(id);
 		setAntecedentLength(antecedentLength);
 		setConfidenceValue(confidenceValue);
 		setSupportValue(supportValue);
+		setAcValue(acValue);
 	}
 
 	public String getId() {
@@ -78,6 +80,14 @@ public class DrlAR {
 		this.setSupportValue(ar.getSupportValue());
 		this.setCheckedOk(false);
 		this.setBestId(ar.getId());
+	}
+
+	public double getAcValue() {
+		return acValue;
+	}
+
+	public void setAcValue(double acValue) {
+		this.acValue = acValue;
 	}
 	
 

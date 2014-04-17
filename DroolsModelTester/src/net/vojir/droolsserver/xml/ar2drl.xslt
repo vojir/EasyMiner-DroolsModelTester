@@ -16,10 +16,11 @@
                 (<xsl:apply-templates select="./ar:Antecedent" mode="drlCondition" />)
             then
             <!-- TODO: doplnění délky antecedentu -->
-                DrlAR $thisAR=new DrlAR("rule_<xsl:value-of select="@id"/>",<xsl:value-of select="count(./ar:Antecedent//ar:Attribute)"/>,
-                <!-- <xsl:value-of select="(./ar:IMValues/ar:IMValue[@name='FUI'])"/> -->
-                <xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b))"/>
-                ,<xsl:value-of select="(./ar:IMValues/ar:IMValue[@name='BASE'])"/>);
+                DrlAR $thisAR=new DrlAR("rule_<xsl:value-of select="@id"/>"
+                ,<xsl:value-of select="count(./ar:Antecedent//ar:Attribute)"/>
+                ,<xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b))"/>
+                ,<xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>
+                ,<xsl:value-of select="((./ar:FourFtTable/@a + ./ar:FourFtTable/@c) div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>);
                 if (isBetterAR($ar,$thisAR)){
                     $ar.updateFromAR($thisAR);
                     update($ar);   

@@ -91,8 +91,10 @@ public class ModelTesterSessionHelper {
 				return isBetterAR_shorterAntecedent(globalAR, currentAR);
 			case "support":
 				return isBetterAR_support(globalAR, currentAR);
-			case "csCombination":
-				return isBetterAR_confidenceSupportCombination(globalAR, currentAR);
+			case "confidenceSupportAntecedentLength":
+				return isBetterAR_confidenceSupportAntecedentLength(globalAR, currentAR);
+			case "confidenceSupportACAntecedentLength":
+				return isBetterAR_confidenceSupportACAntecedentLength(globalAR, currentAR);
 			default:
 				return isBetterAR_confidence(globalAR, currentAR);
 		}
@@ -131,10 +133,37 @@ public class ModelTesterSessionHelper {
 		}
 		return false;
     }
-    public static boolean isBetterAR_confidenceSupportCombination(DrlAR globalAR,DrlAR currentAR){
-    	double ar1=globalAR.getConfidenceValue()*Math.log(globalAR.getSupportValue());
-    	double ar2=currentAR.getConfidenceValue()*Math.log(currentAR.getSupportValue());
-    	return (ar2>ar1);
+    public static boolean isBetterAR_confidenceSupportACAntecedentLength(DrlAR globalAR,DrlAR currentAR){
+    	if (currentAR.getConfidenceValue()>globalAR.getConfidenceValue()){
+    		return true;
+    	}else if(currentAR.getConfidenceValue()==globalAR.getConfidenceValue()){
+    		if (currentAR.getSupportValue()>globalAR.getConfidenceValue()){
+    			return true;
+    		}else if(currentAR.getSupportValue()==globalAR.getSupportValue()){
+    			if (currentAR.getAcValue()>globalAR.getAcValue()){
+    				return true;
+    			}else if (currentAR.getAcValue()==globalAR.getAcValue()){
+    				if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){
+        				return true;
+        			}
+    			}
+    		}
+    	}
+    	return false;
+    }
+    public static boolean isBetterAR_confidenceSupportAntecedentLength(DrlAR globalAR,DrlAR currentAR){
+    	if (currentAR.getConfidenceValue()>globalAR.getConfidenceValue()){
+    		return true;
+    	}else if(currentAR.getConfidenceValue()==globalAR.getConfidenceValue()){
+    		if (currentAR.getSupportValue()>globalAR.getConfidenceValue()){
+    			return true;
+    		}else if(currentAR.getSupportValue()==globalAR.getSupportValue()){
+				if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
     }
     //-----------------------------------------------------------------------------------
 	public static String getBetterARMethod() {
@@ -145,7 +174,9 @@ public class ModelTesterSessionHelper {
 		if (betterARMethod.equals("confidence")||
 				betterARMethod.equals("longerAntecedent")||
 				betterARMethod.equals("shorterAntecedent")||
-				betterARMethod.equals("support")){
+				betterARMethod.equals("support")||
+				betterARMethod.equals("confidenceSupportACAntecedentLength")||
+				betterARMethod.equals("confidenceSupportAntecedentLength")){
 			ModelTesterSessionHelper.betterARMethod = betterARMethod;
 		}else{
 			System.out.println("NEEXISTUJE metoda "+betterARMethod);
