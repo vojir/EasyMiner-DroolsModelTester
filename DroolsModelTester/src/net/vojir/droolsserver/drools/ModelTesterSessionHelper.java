@@ -143,7 +143,7 @@ public class ModelTesterSessionHelper {
     			if (currentAR.getAcValue()>globalAR.getAcValue()){
     				return true;
     			}else if (currentAR.getAcValue()==globalAR.getAcValue()){
-    				if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){
+    				if ((currentAR.getAntecedentLength()<globalAR.getAntecedentLength())){
         				return true;
         			}
     			}

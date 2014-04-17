@@ -78,6 +78,7 @@ public class DrlAR {
 		this.setAntecedentLength(ar.getAntecedentLength());
 		this.setConfidenceValue(ar.getConfidenceValue());
 		this.setSupportValue(ar.getSupportValue());
+		this.setAcValue(ar.getAcValue());
 		this.setCheckedOk(false);
 		this.setBestId(ar.getId());
 	}
