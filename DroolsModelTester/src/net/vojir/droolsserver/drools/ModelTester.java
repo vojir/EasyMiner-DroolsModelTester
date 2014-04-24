@@ -78,6 +78,8 @@ public class ModelTester {
 			rowsObjects.add(drlAR);
 			droolsSession.execute(rowsObjects);
 			
+			System.out.println(drlAR.getConsequentValue()+" : "+drlAR.isCheckedOk());
+			
 			if (drlAR.isCheckedOk()){
 				setRowsPositiveMatch(getRowsPositiveMatch() + 1);
 			}else if(!drlAR.getBestId().equals("")){

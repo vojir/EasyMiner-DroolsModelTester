@@ -10,7 +10,7 @@ import net.vojir.droolsserver.xml.XmlParser;
 public class ModelTesterMain {
 
 	public static void main(String[] args) throws Exception {
-		String method="confidence";
+		String method="confidenceSupportAntecedentLength";
 		String output="text";
 		
 		if ((args.length==1)&&((args[0].equals("-?")||(args[0].equals("/?"))))){

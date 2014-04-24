@@ -20,7 +20,8 @@
                 ,<xsl:value-of select="count(./ar:Antecedent//ar:Attribute)"/>
                 ,<xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b))"/>
                 ,<xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>
-                ,<xsl:value-of select="((./ar:FourFtTable/@a + ./ar:FourFtTable/@c) div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>);
+                ,<xsl:value-of select="((./ar:FourFtTable/@a + ./ar:FourFtTable/@c) div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>
+                ,"<xsl:value-of select="./ar:Consequent//ar:Attribute/ar:Category/ar:Data/ar:Value" />");
                 if (isBetterAR($ar,$thisAR)){
                     $ar.updateFromAR($thisAR);
                     update($ar);   

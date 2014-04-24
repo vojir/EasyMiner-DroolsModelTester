@@ -2,6 +2,25 @@ package net.vojir.droolsserver.drools;
 
 
 public class DrlAR {
+	
+	//TODO jen pracovní
+	private String consequentValue;
+	public void setConsequentValue(String consequentValue){
+		this.consequentValue=consequentValue;
+	}
+	public String getConsequentValue(){
+		return consequentValue;
+	}
+	public DrlAR(String id,int antecedentLength, double confidenceValue, double supportValue, double acValue, String consequentValue){
+		setId(id);
+		setAntecedentLength(antecedentLength);
+		setConfidenceValue(confidenceValue);
+		setSupportValue(supportValue);
+		setAcValue(acValue);
+		setConsequentValue(consequentValue);
+	}
+	//--jen pracovní
+	
 	private String id = "";
 	private String bestId = "";
 	private int antecedentLength = -1;
@@ -16,6 +35,7 @@ public class DrlAR {
 	public DrlAR(String id){
 		setId(id);
 	}
+	
 	
 	public DrlAR(String id,int antecedentLength, double confidenceValue, double supportValue, double acValue){
 		setId(id);
@@ -81,6 +101,7 @@ public class DrlAR {
 		this.setAcValue(ar.getAcValue());
 		this.setCheckedOk(false);
 		this.setBestId(ar.getId());
+		this.setConsequentValue(ar.getConsequentValue());
 	}
 
 	public double getAcValue() {
