@@ -18,7 +18,7 @@ import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
 
 /**
- * Tøída sloužící ke kontrole pøesnosti a úplnosti modelu tvoøeného asociaèními pravidly (naèítající data z DB, využívající znalostní bázi v drools)
+ * Tï¿½ï¿½da slouï¿½ï¿½cï¿½ ke kontrole pï¿½esnosti a ï¿½plnosti modelu tvoï¿½enï¿½ho asociaï¿½nï¿½mi pravidly (naï¿½ï¿½tajï¿½cï¿½ data z DB, vyuï¿½ï¿½vajï¿½cï¿½ znalostnï¿½ bï¿½zi v drools)
  * @author Standa
  *
  */
@@ -26,7 +26,7 @@ import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
 public class ModelTester {
 	
 	private StatelessSession droolsSession;
-	//èítaèe
+	//ï¿½ï¿½taï¿½e
 	private int rowsPositiveMatch;
 	private int rowsNegativeMatch;
 	private int rowsError;
@@ -43,7 +43,7 @@ public class ModelTester {
 	}
 	
 	/**
-	 * Funkce pro projití jednotlivých øádkù a otestování, jestli odpovídají asociaèním pravidlùm v drools stateless session
+	 * Funkce pro projitï¿½ jednotlivï¿½ch ï¿½ï¿½dkï¿½ a otestovï¿½nï¿½, jestli odpovï¿½dajï¿½ asociaï¿½nï¿½m pravidlï¿½m v drools stateless session
 	 * @param csvContent
 	 */
 	public void testAllRows(String csvContent){
@@ -56,20 +56,20 @@ public class ModelTester {
 		
 		CSVReader<String[]> csvParser = CSVReaderBuilder.newDefaultReader(reader);
 		Iterator<String[]> iterator = csvParser.iterator();
-		//pøipravení pøehledu záhlaví
+		//pï¿½ipravenï¿½ pï¿½ehledu zï¿½hlavï¿½
 		header = iterator.next();
 		columnsCount=header.length;
 		
-		//jednotlivé øádky
+		//jednotlivï¿½ ï¿½ï¿½dky
 		while(iterator.hasNext()){
-			//kontrola jednoho øádku z datové matice
+			//kontrola jednoho ï¿½ï¿½dku z datovï¿½ matice
 			row=iterator.next();
 			setRowsTotalCount(getRowsTotalCount() + 1);
 			if (row.length != columnsCount){
 				setRowsError(getRowsError() + 1);
 				continue;
 			}
-			//vytvoøení kolekce a test pomocí drools
+			//vytvoï¿½enï¿½ kolekce a test pomocï¿½ drools
 			DrlAR drlAR= new DrlAR();
 			rowsObjects.clear();
 			for (int i=0;i<columnsCount;i++){
@@ -78,7 +78,11 @@ public class ModelTester {
 			rowsObjects.add(drlAR);
 			droolsSession.execute(rowsObjects);
 			
+<<<<<<< HEAD
+			//System.out.println(drlAR.getConsequentValue()+" : "+drlAR.isCheckedOk()+" = "+drlAR.getBestId());
+=======
 			System.out.println(drlAR.getConsequentValue()+" : "+drlAR.isCheckedOk());
+>>>>>>> refs/remotes/origin/master
 			
 			if (drlAR.isCheckedOk()){
 				setRowsPositiveMatch(getRowsPositiveMatch() + 1);
@@ -86,13 +90,13 @@ public class ModelTester {
 				setRowsNegativeMatch(getRowsNegativeMatch() + 1);
 			}
 			
-			//--kontrola jednoho øádku z datové matice			
+			//--kontrola jednoho ï¿½ï¿½dku z datovï¿½ matice			
 		}
 		
 	}
 	
 	/**
-	 * Funkce pro vynulování èítaèù
+	 * Funkce pro vynulovï¿½nï¿½ ï¿½ï¿½taï¿½ï¿½
 	 */
 	private void resetCounters(){
 		this.setRowsPositiveMatch(0);
@@ -166,7 +170,7 @@ public class ModelTester {
 	}
 	
 	/**
-	 * Statická funkce pro vytvoøení nového modeltesteru na základì XML øetìzce a transformaèní šablony
+	 * Statickï¿½ funkce pro vytvoï¿½enï¿½ novï¿½ho modeltesteru na zï¿½kladï¿½ XML ï¿½etï¿½zce a transformaï¿½nï¿½ ï¿½ablony
 	 * @param xmlString
 	 * @param xslTemlateResourceName
 	 * @return

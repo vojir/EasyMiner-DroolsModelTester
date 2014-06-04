@@ -45,7 +45,6 @@ public class XmlParser {
 			
 			startPosition=xmlString.indexOf("<AssociationRule",endPosition);
 		}
-
 		return fragments;
 	}
 	
@@ -59,7 +58,7 @@ public class XmlParser {
 	}*/
 	
 	/**
-	 * Funkce pro transformaci XML stringu pomocí existujícího transformátoru
+	 * Funkce pro transformaci XML stringu pomocï¿½ existujï¿½cï¿½ho transformï¿½toru
 	 * 
 	 * @param xmlString
 	 * @param transformer
@@ -103,7 +102,7 @@ public class XmlParser {
 		try {
 			builder.addPackageFromDrl( source );
 		} catch (DroolsParserException | IOException e) {
-			//TODO zalogování chyby
+			//TODO zalogovï¿½nï¿½ chyby
 			e.printStackTrace();
 		}
 		

@@ -25,14 +25,18 @@ public class AssociationRulesXmlParser {
 	public static int counter =  0;
 	
 	/**
-	 * Statická funkce pro rozdìlení XML øetìzce AssociationRules na jednotlivé èásti, které je poté možné transformovat
+	 * Statickï¿½ funkce pro rozdï¿½lenï¿½ XML ï¿½etï¿½zce AssociationRules na jednotlivï¿½ ï¿½ï¿½sti, kterï¿½ je potï¿½ moï¿½nï¿½ transformovat
 	 * @param xmlString
 	 * @return
 	 */
 	public static ArrayList<String> splitXMLIntoFragments(String xmlString){
 		ArrayList<String> fragments = new ArrayList<String>();
+<<<<<<< HEAD
+
+=======
 		//java.util.Date date= new java.util.Date();
 		 //System.out.println(new Timestamp(date.getTime()));
+>>>>>>> refs/remotes/origin/master
 		int endPosition=0;
 		int firstPartEnd=xmlString.indexOf(">",xmlString.indexOf("<AssociationRules"))+1;
 		String firstPart=xmlString.substring(0,firstPartEnd);
@@ -41,9 +45,8 @@ public class AssociationRulesXmlParser {
 		StringBuilder fragment = new StringBuilder(firstPart);
 		int fragmentCounter= 0;
 		
-		startPosition=xmlString.indexOf("<AssociationRule",firstPartEnd+3);
+		startPosition=xmlString.indexOf("<AssociationRule",firstPartEnd);
 		while(startPosition>-1){			
-			//System.out.println(startPosition);
 			endPosition=xmlString.indexOf("</AssociationRule",startPosition);
 			
 			fragment.append(xmlString.substring(startPosition, endPosition));
@@ -67,7 +70,7 @@ public class AssociationRulesXmlParser {
 	}
 	
 	/**
-	 * Statická funkce pro vytvoøení transformeru pro XML transformace
+	 * Statickï¿½ funkce pro vytvoï¿½enï¿½ transformeru pro XML transformace
 	 * @return
 	 * @throws TransformerConfigurationException
 	 */
@@ -79,7 +82,7 @@ public class AssociationRulesXmlParser {
 	}
 	
 	/**
-	 * Funkce pro transformaci XML stringu pomocí existujícího transformátoru
+	 * Funkce pro transformaci XML stringu pomocï¿½ existujï¿½cï¿½ho transformï¿½toru
 	 * 
 	 * @param xmlString
 	 * @param transformer
@@ -98,7 +101,7 @@ public class AssociationRulesXmlParser {
 	}
 	
 	/**
-	 * Statická funkce pro XSL transformaci velkého XML
+	 * Statickï¿½ funkce pro XSL transformaci velkï¿½ho XML
 	 * @param xmlString
 	 * @param xslTemlate
 	 * @return
@@ -110,7 +113,10 @@ public class AssociationRulesXmlParser {
 		int maxParts = 60;
 		
 		ArrayList<String> parts = splitXMLIntoFragments(xmlString);
+<<<<<<< HEAD
+=======
 		//System.out.println("parts "+parts.size());
+>>>>>>> refs/remotes/origin/master
     	Transformer transformer = prepareTransformer(xslTemlateResourceName);
     	
     	for (String polozka : parts){

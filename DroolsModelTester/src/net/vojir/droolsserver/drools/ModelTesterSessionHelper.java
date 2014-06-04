@@ -17,7 +17,7 @@ public class ModelTesterSessionHelper {
 	private static String betterARMethod;
 	
 	/**
-	 * Funkce pro vytvoøení nového DLR øetìzce - inicializace pomocí výchozích importù
+	 * Funkce pro vytvoï¿½enï¿½ novï¿½ho DLR ï¿½etï¿½zce - inicializace pomocï¿½ vï¿½chozï¿½ch importï¿½
 	 */
 	public static String prepareDrlString(String drl){
 		StringBuffer drlString=new StringBuffer();
@@ -30,7 +30,7 @@ public class ModelTesterSessionHelper {
 	}
 	
 	/**
-	 * Statická funkce pro vytvoøení RuleBase na základì DRL øetìzce
+	 * Statickï¿½ funkce pro vytvoï¿½enï¿½ RuleBase na zï¿½kladï¿½ DRL ï¿½etï¿½zce
 	 * @param drlString
 	 * @return
 	 */
@@ -49,8 +49,11 @@ public class ModelTesterSessionHelper {
 		//NOTE: There are 2 methods here, the one argument one is for normal DRL.
 		try {
 			builder.addPackageFromDrl(source);
-		} catch (DroolsParserException | IOException e) {
-			//TODO zalogování chyby
+		}catch (DroolsParserException e){
+			//TODO zalogovï¿½nï¿½ chyby
+			e.printStackTrace();
+		}catch (IOException e) {
+			//TODO zalogovï¿½nï¿½ chyby
 			e.printStackTrace();
 		}
 		
@@ -64,7 +67,7 @@ public class ModelTesterSessionHelper {
 	}
     
 	/**
-	 * Statická funkce pro vytvoøení stateless session
+	 * Statickï¿½ funkce pro vytvoï¿½enï¿½ stateless session
 	 * @param drlString
 	 * @return
 	 */
@@ -75,7 +78,7 @@ public class ModelTesterSessionHelper {
     
     
     /**
-     * Statická funkce sloužící k vyhodnocení, jestli je novì vyhodnocované pravidlo lepší, než pøedchozí nalezená varianta
+     * Statickï¿½ funkce slouï¿½ï¿½cï¿½ k vyhodnocenï¿½, jestli je novï¿½ vyhodnocovanï¿½ pravidlo lepï¿½ï¿½, neï¿½ pï¿½edchozï¿½ nalezenï¿½ varianta
      * @param globalAR
      * @param currentAR
      * @return
@@ -155,7 +158,11 @@ public class ModelTesterSessionHelper {
     	if (currentAR.getConfidenceValue()>globalAR.getConfidenceValue()){
     		return true;
     	}else if(currentAR.getConfidenceValue()==globalAR.getConfidenceValue()){
+<<<<<<< HEAD
+    		if (currentAR.getSupportValue()>globalAR.getSupportValue()){
+=======
     		if (currentAR.getSupportValue()>globalAR.getConfidenceValue()){
+>>>>>>> refs/remotes/origin/master
     			return true;
     		}else if(currentAR.getSupportValue()==globalAR.getSupportValue()){
 				if (currentAR.getAntecedentLength()<globalAR.getAntecedentLength()){

@@ -3,6 +3,25 @@ package net.vojir.droolsserver.drools;
 
 public class DrlAR {
 	
+<<<<<<< HEAD
+	//TODO jen pracovnï¿½
+	private String consequentValue;
+	public void setConsequentValue(String consequentValue){
+		this.consequentValue=consequentValue;
+	}
+	public String getConsequentValue(){
+		return consequentValue;
+	}
+	public DrlAR(String id,int antecedentLength, double confidenceValue, double supportValue, double acValue, String consequentValue){
+		setId(id);
+		setAntecedentLength(antecedentLength);
+		setConfidenceValue(confidenceValue);
+		setSupportValue(supportValue);
+		setAcValue(acValue);
+		setConsequentValue(consequentValue);
+	}
+	//--jen pracovnï¿½
+=======
 	//TODO jen pracovní
 	private String consequentValue;
 	public void setConsequentValue(String consequentValue){
@@ -20,6 +39,7 @@ public class DrlAR {
 		setConsequentValue(consequentValue);
 	}
 	//--jen pracovní
+>>>>>>> refs/remotes/origin/master
 	
 	private String id = "";
 	private String bestId = "";
