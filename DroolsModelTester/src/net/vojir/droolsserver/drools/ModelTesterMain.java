@@ -38,14 +38,11 @@ public class ModelTesterMain {
 		String xmlString = readFileToString(args[0]);
 		String csvString = readFileToString(args[1]);
     	
-<<<<<<< HEAD
+
     	//Pï¿½ipravenï¿½ drools stateless session
     	ModelTester modelTester = new ModelTester();
     	modelTester.prepareFromXml(xmlString);
-=======
-    	//Pøipravení drools stateless session
-    	ModelTester modelTester = ModelTester.prepareFromXml(xmlString);
->>>>>>> refs/remotes/origin/master
+
     	modelTester.testAllRows(csvString,method);
     	
     	System.out.println(ModelTesterMain.prepareOutput(modelTester, output));
