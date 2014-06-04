@@ -31,12 +31,8 @@ public class AssociationRulesXmlParser {
 	 */
 	public static ArrayList<String> splitXMLIntoFragments(String xmlString){
 		ArrayList<String> fragments = new ArrayList<String>();
-<<<<<<< HEAD
-
-=======
 		//java.util.Date date= new java.util.Date();
 		 //System.out.println(new Timestamp(date.getTime()));
->>>>>>> refs/remotes/origin/master
 		int endPosition=0;
 		int firstPartEnd=xmlString.indexOf(">",xmlString.indexOf("<AssociationRules"))+1;
 		String firstPart=xmlString.substring(0,firstPartEnd);
@@ -113,14 +109,11 @@ public class AssociationRulesXmlParser {
 		int maxParts = 60;
 		
 		ArrayList<String> parts = splitXMLIntoFragments(xmlString);
-<<<<<<< HEAD
-=======
-		//System.out.println("parts "+parts.size());
->>>>>>> refs/remotes/origin/master
     	Transformer transformer = prepareTransformer(xslTemlateResourceName);
     	
     	for (String polozka : parts){
 			String str = transformXML(polozka,transformer);
+			System.out.println(polozka);
 			outputString.append(str);
 			maxParts--;
 			if (maxParts<=0){

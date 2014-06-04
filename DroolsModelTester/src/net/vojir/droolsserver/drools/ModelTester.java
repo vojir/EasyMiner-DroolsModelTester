@@ -1,9 +1,12 @@
 package net.vojir.droolsserver.drools;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -18,12 +21,12 @@ import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
 
 /**
- * T��da slou��c� ke kontrole p�esnosti a �plnosti modelu tvo�en�ho asocia�n�mi pravidly (na��taj�c� data z DB, vyu��vaj�c� znalostn� b�zi v drools)
+ * Třída sloužící ke kontrole přesnosti a úplnosti modelu tvořeného asociačními pravidly (na��taj�c� data z DB, vyu��vaj�c� znalostn� b�zi v drools)
  * @author Standa
  *
  */
 @SuppressWarnings("restriction")
-public class ModelTester {
+public class ModelTester implements IModelTester {
 	
 	private StatelessSession droolsSession;
 	//��ta�e
@@ -31,7 +34,19 @@ public class ModelTester {
 	private int rowsNegativeMatch;
 	private int rowsError;
 	private int rowsTotalCount;
+	private HashMap<String, Integer> positiveMathes = new HashMap<String, Integer>();
+	public HashMap<String, Integer> getPositiveMathes() {
+		return positiveMathes;
+	}
+
+	public HashMap<String, Integer> getNegativeMathes() {
+		return negativeMathes;
+	}
+
+	private HashMap<String, Integer> negativeMathes = new HashMap<String, Integer>();
 	final static String xslTemlateResourceName="ar2drl.xslt";
+	
+	public ModelTester(){}
 	
 	public ModelTester(StatelessSession droolsSession){
 		this.droolsSession=droolsSession;
@@ -76,23 +91,37 @@ public class ModelTester {
 				rowsObjects.add(new DrlObj(header[i],row[i]));
 			}
 			rowsObjects.add(drlAR);
+
 			droolsSession.execute(rowsObjects);
 			
-<<<<<<< HEAD
 			//System.out.println(drlAR.getConsequentValue()+" : "+drlAR.isCheckedOk()+" = "+drlAR.getBestId());
-=======
-			System.out.println(drlAR.getConsequentValue()+" : "+drlAR.isCheckedOk());
->>>>>>> refs/remotes/origin/master
 			
 			if (drlAR.isCheckedOk()){
 				setRowsPositiveMatch(getRowsPositiveMatch() + 1);
+				addPositiveMatch(drlAR.getBestId().substring(5));
 			}else if(!drlAR.getBestId().equals("")){
 				setRowsNegativeMatch(getRowsNegativeMatch() + 1);
+				addNegativeMatch(drlAR.getBestId().substring(5));
 			}
 			
 			//--kontrola jednoho ��dku z datov� matice			
 		}
 		
+	}
+	
+	public void addPositiveMatch(String id){
+		if (this.positiveMathes.containsKey(id)){
+			this.positiveMathes.put(id, this.positiveMathes.get(id)+1);
+		}else{
+			this.positiveMathes.put(id,1);
+		}
+	}
+	public void addNegativeMatch(String id){
+		if (this.negativeMathes.containsKey(id)){
+			this.negativeMathes.put(id, this.negativeMathes.get(id)+1);
+		}else{
+			this.negativeMathes.put(id,1);
+		}
 	}
 	
 	/**
@@ -103,6 +132,8 @@ public class ModelTester {
 		this.setRowsNegativeMatch(0);
 		this.setRowsError(0);
 		this.setRowsTotalCount(0);
+		this.positiveMathes.clear();
+		this.negativeMathes.clear();
 	}
 
 
@@ -176,26 +207,51 @@ public class ModelTester {
 	 * @return
 	 * @throws Exception
 	 */
-	public static ModelTester prepareFromXml(String xmlString) throws Exception{
+	public void prepareFromXml(String xmlString) throws Exception{
 		String drlString;
 		try {
 			drlString = AssociationRulesXmlParser.transformBigXml(xmlString, xslTemlateResourceName);
-		} catch (TransformerFactoryConfigurationError | TransformerException e) {
+			System.out.println(drlString);
+		} catch (TransformerFactoryConfigurationError e){
+			throw new Exception("Transformation from XML to DRL failed!",e);
+		}	catch (TransformerException e) {
 			throw new Exception("Transformation from XML to DRL failed!",e);
 		}
-    	
+
     	drlString = ModelTesterSessionHelper.prepareDrlString(drlString);
     	
-    	PrintWriter writer = new PrintWriter("drl.txt", "UTF-8");
+    	//System.out.println(drlString);
+    	
+    	/*PrintWriter writer = new PrintWriter("drl.txt", "UTF-8");
     	writer.println(drlString);
     	writer.close();
-    	
+    	*/
     	//System.out.println("DRL string prepared");
     	
     	StatelessSession statelessSession = ModelTesterSessionHelper.prepareStatelessSession(drlString);
 
     	//System.out.println("StatelessSession created");
     	
-    	return new ModelTester(statelessSession);
+    	this.droolsSession=statelessSession;
+    	//return new ModelTester(statelessSession);
     }
+
+	public void prepareFromXml(InputStream inputStream) throws IOException, Exception {
+		this.prepareFromXml(readInputToString(inputStream));
+	}
+	
+	
+	private static String readInputToString(InputStream inputStream) throws IOException{
+		StringBuffer sb = new StringBuffer();
+    	for (int c = inputStream.read(); c != -1; c = inputStream.read()) sb.append((char)c);
+    	return sb.toString();
+	}
+
+	@Override
+	public void testAllRows(InputStream csvInputStream, String selectionMethod) throws IOException {
+		this.testAllRows(readInputToString(csvInputStream),selectionMethod);
+		
+	}
+
+	
 }
