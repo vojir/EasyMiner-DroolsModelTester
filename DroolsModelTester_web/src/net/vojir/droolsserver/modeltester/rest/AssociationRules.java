@@ -9,8 +9,8 @@ import net.vojir.droolsserver.drools.ModelTester;
 
 
 /**
- * Tøída pro testování sad asociaèních pravidel prostøednictvím ModelTesteru
- * @author Stanislav Vojíø
+ * Trida pro otestovani asociacnich pravidel pomoci modeltesteru
+ * @author Stanislav Vojir
  */
 @Path("association-rules")
 public class AssociationRules {
@@ -38,7 +38,7 @@ public class AssociationRules {
 		output.append("<rowsCount>"+modelTester.getRowsTotalCount()+"</rowsCount>");
 		
 		if (complexResults.equalsIgnoreCase("ok")){
-			//vracíme komplexní výsledky - poèty jednotlivých pravidel
+			//vracï¿½me komplexnï¿½ vï¿½sledky - poï¿½ty jednotlivï¿½ch pravidel
 			output.append("<rulesMatches>");
 			if (modelTester.getPositiveMathes().size()>0){
 				for ( Entry<String, Integer> entry : modelTester.getPositiveMathes().entrySet()) {

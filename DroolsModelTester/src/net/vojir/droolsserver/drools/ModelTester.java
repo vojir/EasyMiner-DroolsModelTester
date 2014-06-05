@@ -2,7 +2,6 @@ package net.vojir.droolsserver.drools;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
