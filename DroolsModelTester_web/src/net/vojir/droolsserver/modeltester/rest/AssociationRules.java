@@ -44,14 +44,20 @@ public class AssociationRules {
 				for ( Entry<String, Integer> entry : modelTester.getPositiveMathes().entrySet()) {
 					String id=entry.getKey();
 					Integer positiveMatches=entry.getValue();
-					Integer negativeMatches=modelTester.getNegativeMathes().get(id);
+					Integer negativeMatches=0;
+					if (modelTester.getNegativeMathes().containsKey(id)){
+						negativeMatches=modelTester.getNegativeMathes().get(id);
+					}
 					output.append("<rule id=\""+id+"\" truePositive=\""+positiveMatches.toString()+"\" falsePositive=\""+negativeMatches.toString()+"\" />");
 				}
 				for( Entry<String, Integer> entry: modelTester.getNegativeMathes().entrySet()){
 					String id = entry.getKey();
 					if (!modelTester.getPositiveMathes().containsKey(id)){
 						Integer negativeMatches=entry.getValue();
-						Integer positiveMatches=modelTester.getPositiveMathes().get(id);
+						Integer positiveMatches=0;
+						if (modelTester.getPositiveMathes().containsKey(id)){
+							positiveMatches=modelTester.getPositiveMathes().get(id);
+						}
 						output.append("<rule id=\""+id+"\" truePositive=\""+positiveMatches.toString()+"\" falsePositive=\""+negativeMatches.toString()+"\" />");
 					}
 				}

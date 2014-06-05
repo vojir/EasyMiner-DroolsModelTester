@@ -113,7 +113,7 @@ public class AssociationRulesXmlParser {
     	
     	for (String polozka : parts){
 			String str = transformXML(polozka,transformer);
-			System.out.println(polozka);
+			//System.out.println(polozka);
 			outputString.append(str);
 			maxParts--;
 			if (maxParts<=0){

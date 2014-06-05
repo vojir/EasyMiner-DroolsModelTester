@@ -210,7 +210,6 @@ public class ModelTester implements IModelTester {
 		String drlString;
 		try {
 			drlString = AssociationRulesXmlParser.transformBigXml(xmlString, xslTemlateResourceName);
-			System.out.println(drlString);
 		} catch (TransformerFactoryConfigurationError e){
 			throw new Exception("Transformation from XML to DRL failed!",e);
 		}	catch (TransformerException e) {
@@ -219,7 +218,6 @@ public class ModelTester implements IModelTester {
 
     	drlString = ModelTesterSessionHelper.prepareDrlString(drlString);
     	
-    	//System.out.println(drlString);
     	
     	/*PrintWriter writer = new PrintWriter("drl.txt", "UTF-8");
     	writer.println(drlString);

@@ -140,7 +140,7 @@ public class ModelTesterSessionHelper {
     	if (currentAR.getConfidenceValue()>globalAR.getConfidenceValue()){
     		return true;
     	}else if(currentAR.getConfidenceValue()==globalAR.getConfidenceValue()){
-    		if (currentAR.getSupportValue()>globalAR.getConfidenceValue()){
+    		if (currentAR.getSupportValue()>globalAR.getSupportValue()){
     			return true;
     		}else if(currentAR.getSupportValue()==globalAR.getSupportValue()){
     			if (currentAR.getAcValue()>globalAR.getAcValue()){
