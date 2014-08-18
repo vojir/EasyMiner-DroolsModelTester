@@ -4,39 +4,49 @@
     <xsl:output encoding="UTF-8" method="text" indent="no" xml:space="default" />
     
     <xsl:template match="/">
-            <xsl:apply-templates select="/ar:AssociationRules/ar:AssociationRule" />
+        <xsl:apply-templates select="/ar:AssociationRules/ar:AssociationRule" />
     </xsl:template>
     
     <xsl:template match="ar:AssociationRule">
         rule "rule_<xsl:value-of select="@id"/>"
-        	salience 3
-        	no-loop true
-            when
-                $ar:DrlAR(id=="") and
-                (<xsl:apply-templates select="./ar:Antecedent" mode="drlCondition" />)
-            then
-            <!-- TODO: doplnění délky antecedentu -->
-                DrlAR $thisAR=new DrlAR("rule_<xsl:value-of select="@id"/>"
-                ,<xsl:value-of select="count(./ar:Antecedent//ar:Attribute)"/>
+        salience 3
+        no-loop true
+        when
+        $ar:DrlAR(id=="") and
+        (<xsl:apply-templates select="./ar:Antecedent" mode="drlCondition" />)
+        then
+        <!-- TODO: doplnění délky antecedentu -->
+        DrlAR $thisAR=new DrlAR("rule_<xsl:value-of select="@id"/>"
+        ,<xsl:value-of select="count(./ar:Antecedent//ar:Attribute)"/>
+        <xsl:choose>
+            <xsl:when test="./ar:Rating">
+                ,<xsl:value-of select="./ar:Rating/@confidence"/>
+                ,<xsl:value-of select="./ar:Rating/@support"/>
+                ,0.0
+                ,"<xsl:value-of select="./ar:Consequent//ar:Attribute/ar:Category/ar:Data/ar:Value" />");
+            </xsl:when>
+            <xsl:otherwise>
                 ,<xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b))"/>
                 ,<xsl:value-of select="(./ar:FourFtTable/@a div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>
                 ,<xsl:value-of select="((./ar:FourFtTable/@a + ./ar:FourFtTable/@c) div (./ar:FourFtTable/@a + ./ar:FourFtTable/@b + ./ar:FourFtTable/@c + ./ar:FourFtTable/@d))"/>
-                ,"<xsl:value-of select="./ar:Consequent//ar:Attribute/ar:Category/ar:Data/ar:Value" />");
-                if (isBetterAR($ar,$thisAR)){
-                    $ar.updateFromAR($thisAR);
-                    update($ar);   
-                }   
-         end
-         rule "rule_<xsl:value-of select="@id"/>_consequent"
-         	salience 2
-            when
-                $ar:DrlAR(id=="rule_<xsl:value-of select="@id"/>") and
-                (<xsl:apply-templates select="./ar:Consequent" mode="drlCondition" />)
-            then
-                $ar.setCheckedOk(true);
-				$ar.setId("");
-				update($ar);          
-         end
+                ,"<xsl:value-of select="./ar:Consequent//ar:Attribute/ar:Category/ar:Data/ar:Value" />");        
+            </xsl:otherwise>
+        </xsl:choose>
+        if (isBetterAR($ar,$thisAR)){
+        $ar.updateFromAR($thisAR);
+        update($ar);   
+        }   
+        end
+        rule "rule_<xsl:value-of select="@id"/>_consequent"
+        salience 2
+        when
+        $ar:DrlAR(id=="rule_<xsl:value-of select="@id"/>") and
+        (<xsl:apply-templates select="./ar:Consequent" mode="drlCondition" />)
+        then
+        $ar.setCheckedOk(true);
+        $ar.setId("");
+        update($ar);          
+        end
     </xsl:template>
     
     <xsl:template match="ar:Antecedent" mode="drlCondition">
