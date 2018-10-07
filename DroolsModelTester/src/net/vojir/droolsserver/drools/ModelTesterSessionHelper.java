@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.drools.compiler.compiler.DroolsParserException;
-import org.drools.compiler.compiler.PackageBuilder;
-import org.drools.core.RuleBase;
-import org.drools.core.RuleBaseFactory;
-import org.drools.core.StatelessSession;
-import org.drools.core.rule.Package;
+import org.drools.compiler.DroolsParserException;
+import org.drools.compiler.PackageBuilder;
+
+import org.drools.RuleBase;
+import org.drools.RuleBaseFactory;
+import org.drools.StatelessSession;
+import org.drools.rule.Package;
 
 @SuppressWarnings("restriction")
 public class ModelTesterSessionHelper {

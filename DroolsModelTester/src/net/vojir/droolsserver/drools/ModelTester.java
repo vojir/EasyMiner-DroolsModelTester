@@ -14,7 +14,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import net.vojir.droolsserver.xml.AssociationRulesXmlParser;
 
-import org.drools.core.StatelessSession;
+import org.drools.StatelessSession;
 
 import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
