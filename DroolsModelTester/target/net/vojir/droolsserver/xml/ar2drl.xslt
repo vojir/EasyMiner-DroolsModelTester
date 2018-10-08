@@ -8,16 +8,15 @@
     </xsl:template>
     
     <xsl:template match="ar:AssociationRule">
+        <xsl:variable name="antecendentAttributesCount" select="count(./ar:Antecedent//ar:Attribute)" />
         rule "rule_<xsl:value-of select="@id"/>"
         salience 3
         no-loop true
         when
-        $ar:DrlAR(id=="") and
-        (<xsl:apply-templates select="./ar:Antecedent" mode="drlCondition" />)
+        $ar:DrlAR(id=="")<xsl:if test="$antecendentAttributesCount&gt;0"> and (<xsl:apply-templates select="./ar:Antecedent" />)</xsl:if>
         then
-        <!-- TODO: doplnění délky antecedentu -->
         DrlAR $thisAR=new DrlAR("rule_<xsl:value-of select="@id"/>"
-        ,<xsl:value-of select="count(./ar:Antecedent//ar:Attribute)"/>
+        ,<xsl:value-of select="$antecendentAttributesCount" />
         <xsl:choose>
             <xsl:when test="./ar:Rating">
                 ,<xsl:value-of select="./ar:Rating/@confidence"/>
@@ -41,7 +40,7 @@
         salience 2
         when
         $ar:DrlAR(id=="rule_<xsl:value-of select="@id"/>") and
-        (<xsl:apply-templates select="./ar:Consequent" mode="drlCondition" />)
+        (<xsl:apply-templates select="./ar:Consequent" />)
         then
         $ar.setCheckedOk(true);
         $ar.setId("");
@@ -49,101 +48,39 @@
         end
     </xsl:template>
     
-    <xsl:template match="ar:Antecedent" mode="drlCondition">
-        <xsl:apply-templates select="./ar:Cedent" />
-        <xsl:apply-templates select="./ar:Attribute" />
-    </xsl:template>
-    
-    <xsl:template match="ar:Consequent" mode="drlCondition">
-        <xsl:apply-templates select="./ar:Cedent" />
-        <xsl:apply-templates select="./ar:Attribute" />
-    </xsl:template>
-    
-    <xsl:template match="ar:Cedent">
+    <xsl:template match="ar:Cedent|ar:Antecedent|ar:Consequent" >
         <xsl:if test="@connective='Negation'">
             <!-- tady by to možná chtělo nějak  -->
-            not  
+            not
         </xsl:if>
-        <xsl:choose>
-            <xsl:when test="count(./*)>1">
-                (<xsl:apply-templates select="./*" />)
-            </xsl:when>
-            <xsl:otherwise><xsl:apply-templates select="./*" /></xsl:otherwise>
-        </xsl:choose>
-        
-        <xsl:if test="position() != last()">
-            <xsl:choose>
-                <xsl:when test="parent::node()/@connective='Conjunction'"> and </xsl:when>
-                <xsl:when test="parent::node()/@connective='Disjunction'"> or </xsl:when>
-                <xsl:when test="not(parent::node()/@connective)"> and </xsl:when>
-            </xsl:choose>
-        </xsl:if> 
-        
-        <!--
-        <xsl:choose>
-            <xsl:when test="count(./Attribute)>0">
-                <!- -jde o cedent složený z konkrétních atributů - ->
-                <xsl:for-each select="./Attribute"> 
-                    <xsl:apply-templates select="." />
-                    <xsl:if test="position() != last()">
-                        <xsl:choose>
-                            <xsl:when test="parent::node()/@connective='Conjunction'"> and </xsl:when>
-                            <xsl:when test="parent::node()/@connective='Disjunction'"> or </xsl:when>
-                            <xsl:when test="parent::node()/@connective='Negation'"> not </xsl:when>
-                        </xsl:choose>  
-                    </xsl:if> 
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="count(./Cedent)>0">
-                <!- -jde o složený cedent- ->
-                <xsl:for-each select="./Cedent">
-                    (<xsl:apply-templates select="." />)
-                    <xsl:if test="position() != last()">
-                        <xsl:choose>
-                            <xsl:when test="parent::node()/@connective='Conjunction'"> and </xsl:when>
-                            <xsl:when test="parent::node()/@connective='Disjunction'"> or </xsl:when>
-                            <xsl:when test="parent::node()/@connective='Negation'"> not </xsl:when>
-                        </xsl:choose>
-                    </xsl:if>    
-                </xsl:for-each>
-            </xsl:when>
-        </xsl:choose>-->
+        <xsl:variable name="connective" select="@connective" />
+
+        <xsl:if test="count(./*)&gt;1">
+            (
+        </xsl:if>
+        <xsl:for-each select="ar:Cedent|ar:Attribute">
+            <xsl:apply-templates select="." />
+            <xsl:if test="position() != last()">
+                <xsl:choose>
+                    <xsl:when test="$connective='Disjunction'"> or </xsl:when>
+                    <xsl:otherwise> and </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
+        </xsl:for-each>
+        <xsl:if test="count(./*)&gt;1">
+            )
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="ar:Attribute" xml:space="preserve" >
+        DrlObj (name == "<xsl:value-of select="./ar:Column/text()"/>",
+        <xsl:apply-templates select="ar:Category" />
+        )
     </xsl:template>
     
     <xsl:template match="ar:Category">
         <xsl:if test="position()>1"> || </xsl:if>
         <xsl:apply-templates select="ar:Data" />
-    </xsl:template>
-    
-    <xsl:template match="ar:Attribute" xml:space="preserve" >
-        DrlObj (name == "<xsl:value-of select="./ar:Column/text()"/>", 
-        <!--
-        <xsl:choose>
-            <xsl:when test="count(./ar:Category)>0">
-            
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:apply-templates select="./ar:Category/ar:Data" />    
-            </xsl:otherwise>
-        </xsl:choose>-->
-        <xsl:apply-templates select="ar:Category" />
-        )
-        <xsl:if test="position() != last()">
-            <xsl:if test="../@connective='Conjunction'">
-                and
-            </xsl:if>
-            <xsl:if test="../@connective='Disjunction'">
-                or
-            </xsl:if> 
-            <xsl:if test="not(../@connective)">
-                and
-            </xsl:if> 
-            <!--
-            <xsl:choose>
-                <xsl:when test="parent::node()/@connective='Conjunction'"> and </xsl:when>
-                <xsl:when test="parent::node()/@connective='Disjunction'"> or </xsl:when>
-            </xsl:choose>-->
-        </xsl:if> 
     </xsl:template>
     
     <xsl:template match="ar:Data">

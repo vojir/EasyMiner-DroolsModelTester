@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="DroolsModelTester2018">
+    <output-path>$PROJECT_DIR$/out/artifacts/DroolsModelTester2018</output-path>
+    <root id="archive" name="DroolsModelTester2018.war">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/DroolsModelTester_web/WebContent/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="DroolsModelTester" />
+          <element id="module-output" name="DroolsModelTester_web" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Drools-5.4.0" />
+          <element id="file-copy" path="$PROJECT_DIR$/DroolsModelTester/lib/jcsv-1.4.0.jar" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="DroolsModelTester_web/javaeeApplication/javaEEApplication" />
+      <element id="javaee-facet-resources" facet="DroolsModelTester_web/web/Web" />
+    </root>
+  </artifact>
+</component>
